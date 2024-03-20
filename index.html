@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Mahasiswa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 100%; /* Lebar maksimum */
+        }
+    
+        #formMahasiswa {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background-color: #f8f9fa; /* Warna latar belakang */
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+            z-index: 999; /* Menempatkan di atas elemen lain */
+        }
+    
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px; /* Tambahkan margin bottom untuk spasi antar form */
+        }
+    
+        .form-group label {
+            width: 150px;
+            margin-right: 10px;
+            text-align: right; /* Mengatur teks ke kanan */
+        }
+    
+        .form-group input {
+            flex: 1;
+        }
+    
+        .container {
+            margin-right: auto; /* Tambahkan margin right auto untuk mendorong konten ke kiri */
+            margin-left: auto; /* Tambahkan margin left auto untuk mendorong konten ke kanan */
+            padding-right: 15px; /* Tambahkan padding right untuk spasi sisi kanan */
+            padding-left: 15px; /* Tambahkan padding left untuk spasi sisi kiri */
+        }
+    
+        .table {
+            margin-bottom: 20px; /* Tambahkan margin bottom untuk spasi antara tabel dan form */
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Data Mahasiswa</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>NIM</th>
+                    <th>Nama Lengkap</th>
+                    <th>Alamat</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dataMahasiswa">
+                <tr>
+                    <td>1</td>
+                    <td>Namal</td>
+                    <td>11Alamat</td>
+                    <td>
+                        <button onclick="editData(this)" class="btn btn-sm btn-primary">Ubah</button>
+                        <button onclick="hapusData(this)" class="btn btn-sm btn-danger">Hapus</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <form id="formMahasiswa">
+        <div class="container">
+            <div class="form-group">
+                <label for="nim">NIM:</label>
+                <input type="text" id="nim" name="nim" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="alamat">Alamat:</label>
+                <input type="text" id="alamat" name="alamat" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="nama">Nama Lengkap:</label>
+                <input type="text" id="nama" name="nama" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Simpan" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById("formMahasiswa").addEventListener("submit", function(event) {
+            event.preventDefault(); // Mencegah pengiriman form
+
+            // Mengambil nilai dari input form
+            var nim = document.getElementById("nim").value;
+            var nama = document.getElementById("nama").value;
+            var alamat = document.getElementById("alamat").value;
+
+            // Membuat elemen baris baru untuk tabel
+            var newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${nim}</td>
+                <td>${nama}</td>
+                <td>${alamat}</td>
+                <td>
+                    <button onclick="editData(this)" class="btn btn-sm btn-primary">Ubah</button>
+                    <button onclick="hapusData(this)" class="btn btn-sm btn-danger">Hapus</button>
+                </td>
+            `;
+
+            // Memasukkan baris baru ke dalam tabel
+            document.getElementById("dataMahasiswa").appendChild(newRow);
+
+            // Mengosongkan nilai input setelah data ditambahkan
+            document.getElementById("nim").value = "";
+            document.getElementById("nama").value = "";
+            document.getElementById("alamat").value = "";
+        });
+
+        function hapusData(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        function editData(button) {
+            var row = button.parentNode.parentNode;
+            var columns = row.getElementsByTagName("td");
+            document.getElementById("nim").value = columns[0].innerText;
+            document.getElementById("nama").value = columns[1].innerText;
+            document.getElementById("alamat").value = columns[2].innerText;
+
+            // Hapus baris yang diubah dari tabel
+            row.parentNode.removeChild(row);
+        }
+    </script>
+</body>
+</html>
